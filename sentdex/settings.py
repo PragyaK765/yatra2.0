@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'sentdex.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yatra',
+        'NAME': 'Yatra',
         'USER': 'root',
-        'PASSWORD': 'Y@tra123',
+        'PASSWORD': 'Password@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }

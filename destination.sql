@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `travello_destination`
 --
 
-CREATE TABLE `travello_destination` (
+CREATE TABLE `destination` (
   `id` int(11) NOT NULL,
   `country` varchar(20) NOT NULL,
   `img1` varchar(100) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `travello_destination` (
 -- Dumping data for table `travello_destination`
 --
 
-INSERT INTO `travello_destination` (`id`, `country`, `img1`, `img2`, `number`) VALUES
+INSERT INTO `destination` (`id`, `country`, `img1`, `img2`, `number`) VALUES
 (1, 'Italy', 'pics/1.png', 'pics/mesut-kaya-eOcyhe5-9sQ-unsplash.jpg', 5),
 (2, 'Dubai', 'pics/Dubai_w2bRsjW.jpg', 'pics/images.jfif', 4),
 (3, 'USA', 'pics/1.png', 'pics/banner2.png', 2),
@@ -55,7 +55,7 @@ INSERT INTO `travello_destination` (`id`, `country`, `img1`, `img2`, `number`) V
 --
 -- Indexes for table `travello_destination`
 --
-ALTER TABLE `travello_destination`
+ALTER TABLE `destination`
   ADD PRIMARY KEY (`id`);
 COMMIT;
 
