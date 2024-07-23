@@ -8,14 +8,14 @@ from django.utils import timezone
 # Create your models here.
 class Destination(models.Model):
     id = models.IntegerField(primary_key=True)
-    country = models.CharField(max_length=20)
+    place = models.CharField(max_length=20)
     img1 = models.ImageField(upload_to='pics')
     img2 = models.ImageField(upload_to='pics')
     number = models.IntegerField(default=2)
 
 class Detailed_desc(models.Model):
     dest_id = models.AutoField(primary_key=True)
-    country = models.CharField(max_length=20)
+    place = models.CharField(max_length=20)
     days = models.IntegerField(default=5)
     price = models.IntegerField(default=20000)
     rating = models.IntegerField(default=5)
