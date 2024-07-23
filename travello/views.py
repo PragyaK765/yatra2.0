@@ -109,7 +109,9 @@ def logout(request):
     return redirect('index')
 
 
-
+# def about(request):
+#     auth.about(request)
+#     return redirect('about')
 
 @login_required(login_url='login')
 def destination_list(request,city_name):
