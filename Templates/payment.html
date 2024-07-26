@@ -86,7 +86,7 @@
             <ul class="short_ls" style="background-color: #29a3a3;">
                <li>
 
-                  <span style="font-size :20px;">Travello</span>
+                  <span style="font-size :20px;">YATRA</span>
                </li>
 
             </ul>
@@ -105,9 +105,7 @@
                         <div id="horizontalTab">
                            <ul class="resp-tabs-list">
                               <li>Payment Info.</li>
-                              <li>Credit/Debit</li>
-                              <li>Net Banking</li>
-                              <li>Paypal Account</li>
+                              <li>Khalti Account</li>
                            </ul>
                            <div class="resp-tabs-container">
                               <!--/tab_one-->
@@ -185,7 +183,7 @@
 <!--                                             </div>-->
 <!--                                             <button class="submit" type="submit"><span>Make a payment </span></button>-->
 <!--                                          </div>-->
-                                          <label>Name On Card</label></br>
+                                        <!--  <label>Name On Card</label></br>
                                           <input type="text" class="pipo1" placeholder="John smith" name="name"></br>
                                        <label>Card Number</label>
                                        <input type="text" class="pipo1" placeholder="**** **** **** *****" name="card_number"></br>
@@ -261,15 +259,10 @@
 <!--                                       </form>-->
                                               <form class="cc-form"  action="pessanger_detail_def/card_payment" method="POST" >
                                                  {%csrf_token%}
-                                                 <label>Card Number</label>
-                                       <input type="text" class="pipo1" placeholder="**** **** **** *****" name="card_number"></br>
-                                                   <label>Card Holder Name</label></br>
-                                          <input type="text" class="pipo1" placeholder="John smith" name="name"></br>
-
-                                       <label>CVV</label></br>
-                                       <input type="text" class="pipo1" placeholder="***" name="cvv"><br>
-                                       <label>Expiration Date</label></br>
-                                       <input type="text" class="pipo2" placeholder="MM" name="MM"><label> </label><input type="text" class="pipo2" placeholder="YY" name="YY">
+                                                 <label>Enter Khalti ID</label>
+                                       <input type="text" class="pipo1" placeholder="Khalti Mobile Number" name="card_number"></br>
+                                                   <label>Khalti Password</label></br>
+                                          <input type="text" class="pipo1" placeholder="Khalti Password/PIN" name="name"></br>
                                        </br><br>
                                        <input type="submit" name='Submit' value='PROCEED PAYMENT' width="300px" >
                                               </form>

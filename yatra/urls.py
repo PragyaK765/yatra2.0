@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
+from .import views
 
 from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('register', views.register, name='register'),
-    # path('about', views.about, name='about'),
+    path('about', views.about, name='about'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
     path('search', views.search, name='search'),
@@ -16,6 +17,5 @@ urlpatterns = [
     path('upcoming_trips', views.upcoming_trips, name='upcoming_trips'),
     path('destination_list/destination_details/pessanger_detail_def/pessanger_detail_def/card_payment', views.card_payment, name='card_payment'),
     path('destination_list/destination_details/pessanger_detail_def/pessanger_detail_def/otp_verification', views.otp_verification, name='otp_verification'),
-    path('destination_list/destination_details/pessanger_detail_def/pessanger_detail_def/net_payment', views.net_payment, name='net_payment'),
-
+    path('recommend', views.get_recommendations, name='recommendations'),
 ]

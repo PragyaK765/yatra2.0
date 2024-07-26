@@ -28,6 +28,54 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+        /* Form styles */
+        form {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+        }
+
+        form button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #FFA500;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+    </style>
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
 <body>
@@ -52,7 +100,7 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a class="active" href="/">home</a></li>
-                                            <li><a href="about.html">About</a></li>
+                                            <li><a href="about">About</a></li>
                                              </li>
                                              <li><a href="upcoming_trips">Upcoming Trips</a></li>
                                              </li>
@@ -120,7 +168,7 @@
                             <div class="slider_text text-center">
                                 <h3>Pokhara</h3>
                                 <p></p>
-                                <a href="destination_details/Pokhara" class="boxed-btn3">Explore Now</a>
+                                <a href="destination_list/Pokhara" class="boxed-btn3">Explore Now</a>
                             </div>
                         </div>
                     </div>
@@ -157,6 +205,8 @@
         </div>
     </div>
     <!-- slider_area_end -->
+    
+<br><br>
 
     <!-- where_togo_area_start  -->
     <div class="where_togo_area">
@@ -169,21 +219,16 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="search_wrap">
-                        <form class="search_form" action="search" method="POST">
-                            {%csrf_token%}
-                            <div class="input_field">
-                                <input type="text" placeholder="Where to go?" name="place">
-                            </div>
 
-                            <div class="search_btn">
-                                <input class="boxed-btn4 " type="submit" ></input>
-                            </div>
-                            <div class="form_area">
-                                {% for message in messages %}
-                            <h3>{{ message }}</h3>
-                            {% endfor %}
-                            </div>
-                        </form>
+                            {%csrf_token%}
+                            <form action="{% url 'recommendations' %}" method="post">
+                                {% csrf_token %}
+                                <label for="preference">Enter your preference (e.g., Adventure, Scenic):</label>
+                                <input type="text" id="preference" name="preference">
+                                <button type="submit">Get Recommendations</button>
+                            </form>
+                            
+                        
                     </div>
                 </div>
             </div>

@@ -47,20 +47,11 @@ class pessanger_detail(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} - Trip ID: {self.Trip_id}"
 
-class Cards(models.Model):
-    Card_number = models.CharField(primary_key=True, max_length=16)
-    Ex_month = models.CharField(max_length=2)
-    Ex_Year = models.CharField(max_length=2)
-    CVV = models.CharField(max_length=3)
+class Khalti_details(models.Model):
+    mobile_number = models.CharField(primary_key=True, max_length=16)
+    password = models.CharField(max_length=2)
     Balance = models.CharField(max_length=8)
     email=models.EmailField(max_length=50,default='rambarodavala21@gmail.com')
-
-class NetBanking(models.Model):
-    Username = models.CharField(primary_key=True, max_length=16)
-    Password = models.CharField(max_length=14)
-    Bank=models.CharField(max_length=25)
-    Balance = models.CharField(max_length=9)
-
 
 class Transactions(models.Model):
     Transactions_ID = models.AutoField(primary_key=True)

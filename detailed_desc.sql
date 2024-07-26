@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `detailed_desc` (
   `dest_id` int(11) NOT NULL,
-  `country` varchar(20) NOT NULL,
+  `place` varchar(20) NOT NULL,
   `days` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `rating` int(11) NOT NULL,

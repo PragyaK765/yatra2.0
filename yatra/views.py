@@ -1,5 +1,5 @@
 
-from .models import Destination, Detailed_desc, pessanger_detail, Cards, Transactions, NetBanking
+from .models import Destination, Detailed_desc, pessanger_detail, Khalti_details, Transactions
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
@@ -13,6 +13,7 @@ from django.forms.formsets import formset_factory
 from django.shortcuts import render
 from django.template import Library
 from datetime import datetime
+from .utils import recommend_tours
 
 
 
@@ -108,9 +109,9 @@ def logout(request):
     return redirect('index')
 
 
-# def about(request):
-#     auth.about(request)
-#     return redirect('about')
+def about(request):
+     #auth.about(request)
+     return render(request, 'about.html')
 
 @login_required(login_url='login')
 def destination_list(request,city_name):
@@ -127,10 +128,10 @@ def destination_details(request,city_name):
 
 def search(request):
     try:
-        place1 = request.session.get('place')
-        print(place1)
-        dest = Detailed_desc.objects.get(dest_name=place1)
-        print(place1)
+        place = request.session.get('city')
+        print(place)
+        dest = Detailed_desc.objects.get(dest_name=place)
+        print(place)
         return render(request, 'destination_details.html', {'dest': dest})
     except:
         messages.info(request, 'Place not found')
@@ -154,40 +155,45 @@ def pessanger_detail_def(request, city_name):
             except pessanger_detail.DoesNotExist:
                 return redirect('index')
             pipo_id = obj.Trip_same_id
-            #pipo_id =4
             request.session['Trip_same_id'] = pipo_id
-            payment = request.session['payment']
-            city = request.session['city']
-            print(request.POST['trip_date'])
-            #temp_date = parse_date(request.POST['trip_date'])
+            price = request.session['price']
+            city = request.session.get('city', 'Kathmandu')
             temp_date = datetime.strptime(request.POST['trip_date'], "%Y-%m-%d").date()
-            username = request.user
-            print(temp_date)
-            request.session['n']=formset.total_form_count()
-            for i in range(0, formset.total_form_count()):
+            user = request.user  # This is the User instance
+            request.session['n'] = formset.total_form_count()
+            for i in range(formset.total_form_count()):
                 form = formset.forms[i]
 
-                t = pessanger_detail(Trip_same_id=pipo_id,first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
-                                     age=form.cleaned_data['age'],
-                                     Trip_date=temp_date,payment=price,username=usernameget,city=city)
+                t = pessanger_detail(
+                    Trip_same_id=pipo_id,
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                    age=form.cleaned_data['age'],
+                    Trip_date=temp_date,
+                    payment=price,
+                    username=user,  # Assign the User instance
+                    city=city
+                )
                 t.save()
-                # print (formset.forms[i].form-[i]-value)
 
-            obj.Trip_same_id = (pipo_id + 1)
+            obj.Trip_same_id = pipo_id + 1
             obj.save()
             no_of_person = formset.total_form_count()
             price1 = no_of_person * price
-            GST = price1 * 0.18
+            GST = price1 * 0.13
             GST = float("{:.2f}".format(GST))
             final_total = GST + price1
             request.session['pay_amount'] = final_total
-            return render(request,'payment.html', {'no_of_person': no_of_person,
-                                                   'price1': price1, 'GST': GST, 'final_total': final_total,'city': city })
+            return render(request, 'payment.html', {
+                'no_of_person': no_of_person,
+                'price1': price1,
+                'GST': GST,
+                'final_total': final_total,
+                'city': city
+            })
     else:
         formset = KeyValueFormSet()
-
-        return render(request, 'sample.html', {'formset': formset, 'city_name': city_name, })
-
+        return render(request, 'sample.html', {'formset': formset, 'city_name': city_name})
 
 def upcoming_trips(request):
     username = request.user.get_username()
@@ -198,6 +204,14 @@ def upcoming_trips(request):
     return render(request,'upcoming trip1.html',{'person':person})
 
 @login_required(login_url='login')
+
+def get_recommendations(request):
+    if request.method == 'POST':
+        preference = request.POST.get('preference')
+        recommendations = recommend_tours(preference)
+        return render(request, 'recommendations.html', {'recommendations': recommendations.to_dict(orient='records')})
+    return render(request, 'index.html')
+
 def card_payment(request):
     card_no = request.POST.get('card_number')
     pay_method = 'Debit card'
@@ -238,34 +252,7 @@ def card_payment(request):
     except:
         return render(request, 'wrongdata.html')
 
-@login_required(login_url='login')
-def net_payment(request):
-    username = request.POST['cardNumber']
-    Password1 = request.POST['pass']
-    Bank_name = request.POST['banks']
-    usernameget = request.user.get_username()
-    Trip_same_id1 = request.session['Trip_same_id']
-    amt = int(request.session['pay_amount'])
-    pay_method = 'Net Banking'
-    try:
-        r = NetBanking.objects.get(Username=username, Password=Password1,Bank=Bank_name)
-        balance = r.Balance
-        request.session['total_balance'] = balance
-        if int(balance) >= int(request.session['pay_amount']):
-            total_balance = int(request.session['total_balance'])
-            rem_balance = int(total_balance - int(request.session["pay_amount"]))
-            r.Balance = rem_balance
-            r.save(update_fields=['Balance'])
-            r.save()
-            t = Transactions(username=usernameget, Trip_same_id=Trip_same_id1, Amount=amt, Payment_method=pay_method, Status='Successfull')
-            t.save()
-            return render(request, 'confirmetion_page.html')
-        else:
-            t = Transactions(username=usernameget, Trip_same_id=Trip_same_id1, Amount=amt, Payment_method=pay_method)
-            t.save()
-            return render(request, 'wrongdata.html')
-    except :
-        return render(request, 'wrongdata.html')
+
 
 @login_required(login_url='login')
 def otp_verification(request):
